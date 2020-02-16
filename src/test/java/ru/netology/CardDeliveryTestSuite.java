@@ -48,6 +48,26 @@ public class CardDeliveryTestSuite {
     }
 
     @Test
+    @DisplayName("Should check city")
+    void shouldCheckCity() {
+
+        open("http://localhost:9999");
+
+        $$("#root .form-field").find(Condition.hidden);
+        $("[data-test-id=city] input").setValue("Клин");
+
+        LocalDate date = LocalDate.now().plusDays(3);
+        $("[data-test-id=date] input").setValue(String.valueOf(date));
+
+        $("[data-test-id=name] input").setValue("Кириллов Игорь");
+        $("[data-test-id=phone] input").setValue("+79051112233");
+        $("[data-test-id=agreement]").click();
+        $$("button").find(Condition.exactText("Забронировать")).click();
+        $(".input_invalid .input__sub").shouldHave(Condition.exactText("Доставка в выбранный город недоступна"));
+
+    }
+
+    @Test
     @DisplayName("Should check incorrect name")
     void shouldCheckIncorrectName() {
 
